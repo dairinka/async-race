@@ -1,0 +1,125 @@
+.all-wrapper {
+  font-size: 1.5vw;
+  background: #1a1a1a;
+  padding: 1vw;
+}
+.btn {
+  background: #30b96e;
+  padding: 10px 0;
+  text-align: center;
+  width: 10vw;
+  max-width: 100px;
+  min-width: 70px;
+  border: 1px solid #0d3f24;
+  border-radius: 5px;
+  margin: 0.3vw;
+  transition: 200ms ease-in;
+
+  &:hover {
+    background: #48e990;
+  }
+}
+
+.input {
+  height: 35px;
+  margin: 0.5vw; 
+  border-radius: 5px; 
+}
+
+.generate-btn {
+  width: 140px;
+  max-width: 140px;
+}
+
+.contol-line {
+  display: flex;
+  align-items: center;
+
+  .name-input {
+    padding-left: 5px;
+  }
+}
+
+.car {
+  &__engine-btn {
+    width: 30px;
+    min-width: 30px;
+    padding: 10px 0;
+    text-align: center;
+  }
+  &__img {
+    content: url("../img/car.svg");
+    width: 100px;
+    transform: translateX(0);
+    
+    position: relative;
+  }
+  &__flag-img {
+   content: url("../img/finish.svg"); 
+   height: 60px;
+   margin-bottom: 5px;
+   position: absolute;
+   right: 100px;
+  }
+  .racing-block {
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+  }
+  .car-move{
+    width: 100%;
+    animation-name: racing;
+    animation-duration: 2s;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+  }
+  &__land-line {
+    width: 100%;
+    border-top: 2px dotted #ffffff;
+    margin-top: -5px;
+  }
+}
+@keyframes racing {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(95%);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .all-wrapper {
+    font-size: 20px;
+
+  }
+  .btn {
+    width: 110px;
+  }
+  .generate-btn {
+    width: 180px;
+    max-width: 180px;
+  }
+  .car {
+    &__engine-btn {
+      width: 30px;
+      min-width: 30px;
+    }
+  }
+}
+@media screen and (max-width: 800px) {
+  .all-wrapper {
+    font-size: 12px;
+
+  }
+  .btn {
+    width: 70px;
+    padding: 5px;
+  }
+  .car {
+    &__engine-btn {
+      width: 30px;
+      min-width: 30px;
+    }
+  }
+}

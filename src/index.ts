@@ -1,6 +1,10 @@
+import "./asset/scss/zero.scss";
+import "./asset/scss/style.scss";
 import "./index.html";
 import Garage from "./ts/component/garage";
 import ServerData from "./ts/load/serverData";
+import { drawMainPage } from "./ts/pages/drawPage";
+import listenPage from "./ts/pages/listenPage";
 import { PageQueryParams, CarData } from "./ts/type";
 const params = {
   baseUrl: "http://localhost:3000",
@@ -11,10 +15,9 @@ const newCar: CarData = {
   color: "black",
 };
 
-const h1 = document.createElement("h1");
-document.body.append(h1);
-h1.textContent = "Hello world";
 const serverData = new ServerData(params.baseUrl);
 serverData.getCars(pageParams);
 serverData.getCar(1);
 serverData.createCar(newCar);
+drawMainPage();
+listenPage();
