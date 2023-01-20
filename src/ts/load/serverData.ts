@@ -1,4 +1,4 @@
-import { Path, ServerTuple, PageQueryParams, CarData } from "../type";
+import { Path, PageQueryParams, AllCarData, CarData } from "../type";
 class ServerData {
   baseUrl: string;
   // limit: number;
@@ -11,21 +11,39 @@ class ServerData {
     this.baseUrl = baseUrl;
   }
 
-  private generateQueryString(queryParams: PageQueryParams[] = []): string {
-    return queryParams.length
-      ? `? ${queryParams.map((x) => `${x.key}=${x.value}`).join("&")}`
-      : "";
+  private generateQueryString(queryParams: PageQueryParams[]): string {
+    const arr = queryParams.map((x) => {
+      return Object.entries(x).reduce((acc, el) => {
+        return `${el[0]}=${el[1]}`;
+      }, "");
+    });
+    return queryParams.length ? `?${arr.join("&")}}` : "";
   }
 
-  public async getCars(queryParams: PageQueryParams[] = []): Promise<JSON> {
+  public async isConnect(): Promise<boolean> {
+    try {
+      const url = `${this.baseUrl}`;
+      await fetch(url);
+    } catch {
+      return false;
+    }
+    return true;
+  }
+
+  public async getCars(queryParams: PageQueryParams[]): Promise<AllCarData> {
     const url = `${this.baseUrl}${Path.garage}${this.generateQueryString(
       queryParams
     )}`;
-
     const response: Response = await fetch(url);
-    const data: JSON = await response.json();
-    console.log("data", data);
-    return data;
+    const allCarAmount = response.headers.get("X-Total-Count");
+    const data: string = await response.json();
+    const carData: CarData[] = JSON.parse(JSON.stringify(data));
+    const allCarData: AllCarData = {
+      carArr: carData,
+      allAmountCar: String(allCarAmount),
+    };
+    console.log("allCarData", allCarData);
+    return allCarData;
   }
 
   public async getCar(id: number): Promise<JSON> {
