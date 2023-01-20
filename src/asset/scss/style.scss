@@ -16,7 +16,7 @@
   transition: 200ms ease-in;
 
   &:hover {
-    background: #48e990;
+    filter: brightness(150%);
   }
 }
 
@@ -39,7 +39,41 @@
     padding-left: 5px;
   }
 }
-
+.h2 {
+  display: flex;
+  align-items: baseline;
+  color: #ffffff;
+  font-size: 5vw;
+  margin: 50px 0 20px;
+}
+.all-amount {
+  display: flex;
+  align-items: baseline;
+  font-size: 3.5vw;
+  color: #a3a3a3;
+  margin-left: 50px;
+}
+.all-amount::before {
+  content: url("../img/car.svg");
+  margin-right:10px;
+  margin-bottom: -5px;
+}
+.pagination-line {
+  display:flex;
+  align-items: center;
+}
+.pagination-line .btn {
+  background: #fffc60;
+}
+.current-page {
+  margin: 0 20px;
+  background: #ffffff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+}
 .car {
   &__engine-btn {
     width: 30px;
@@ -48,23 +82,23 @@
     text-align: center;
   }
   &__img {
-    content: url("../img/car.svg");
+    //content: url("../img/car.svg");
     width: 100px;
-    transform: translateX(0);
-    
-    position: relative;
   }
   &__flag-img {
    content: url("../img/finish.svg"); 
-   height: 60px;
-   margin-bottom: 5px;
+   max-height: 60px;
+   margin-bottom: 10px;
    position: absolute;
-   right: 100px;
+   right: 5rem;
   }
   .racing-block {
     display: flex;
+    width: 100%;
+    width: 97vw;
     align-items: flex-end;
     position: relative;
+    overflow: hidden;
   }
   .car-move{
     width: 100%;
@@ -76,15 +110,28 @@
   &__land-line {
     width: 100%;
     border-top: 2px dotted #ffffff;
-    margin-top: -5px;
+    margin-top: -10px;
   }
+  &__control-line {
+    display: flex;
+    align-items: center;
+  }
+  &__name {
+    color: #ffffff;
+    font-size: 1.5vw;
+    font-weight: normal;
+    margin-left: 15px;
+  }
+}
+.car-blocks-wrapper {
+  margin-top: 20px;
 }
 @keyframes racing {
   0% {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(95%);
+    transform: translateX(90%);
   }
 }
 
@@ -104,6 +151,9 @@
     &__engine-btn {
       width: 30px;
       min-width: 30px;
+    }
+    &__flag-img {
+      right: 120px;
     }
   }
 }
