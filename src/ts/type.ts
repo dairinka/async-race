@@ -15,6 +15,7 @@ export enum Base {
 
 export enum LSParam {
   page = "page",
+  allCarAmount = "amount",
 }
 
 export type ServerTuple = [limit: number, baseUrl: string];
@@ -28,7 +29,7 @@ export interface CarData {
   id?: number;
 }
 
-export interface AllCarData {
-  carArr: CarData[];
-  allAmountCar: string;
-}
+// export interface AllCarData {
+//   carArr: CarData[];
+//   allAmountCar: string;
+// }

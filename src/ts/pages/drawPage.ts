@@ -47,9 +47,11 @@ function drawControlBlock(parentElement: HTMLElement): void {
     if (i === 0) {
       btn.textContent = "Create";
       btn.dataset.btn = "create";
+      li.dataset.type = "create";
     } else {
       btn.textContent = "Update";
       btn.dataset.btn = "update";
+      li.dataset.type = "update";
     }
     li.append(inputName, inputColor, btn);
     parentElement.appendChild(li);
@@ -62,7 +64,8 @@ function drawControlRaceLine(parentElement: HTMLElement) {
   const generateCarsBtn = <HTMLButtonElement>document.createElement("button");
   raceBtn.className = resetBtn.className = "btn";
   generateCarsBtn.className = "btn generate-btn";
-  raceBtn.dataset.btn = resetBtn.dataset.btn = "race";
+  raceBtn.dataset.btn = "race";
+  resetBtn.dataset.btn = "reset";
   generateCarsBtn.dataset.btn = "generate";
   raceBtn.textContent = "Race";
   resetBtn.textContent = "Reset";
