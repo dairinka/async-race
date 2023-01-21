@@ -9,6 +9,7 @@ function listenPage() {
   const allWrapper = document.querySelector(".all-wrapper");
   allWrapper?.addEventListener("click", (event: Event) => {
     const target = <HTMLElement>event.target;
+    removeSelected(target);
     const targetData = target.dataset.btn;
     let car, carId;
     if (target.closest(".car") !== null) {
@@ -102,5 +103,19 @@ async function selectCar(carId: string) {
   carImg?.classList.add("selected");
   // console.log("controlLine", controlLine);
   // console.log("inputColor", inputColor);
+}
+function removeSelected(target: HTMLElement): void {
+  const selectedEls: NodeListOf<HTMLElement> = document.querySelectorAll(
+    ".selected"
+  );
+  const inputsOfControlLine: NodeListOf<HTMLElement> = document.querySelectorAll(
+    "[data-type = 'update'] .input"
+  );
+  if (
+    selectedEls.length > 0 &&
+    !Array.from(inputsOfControlLine).includes(target)
+  ) {
+    Array.from(selectedEls).forEach((el) => el.classList.remove("selected"));
+  }
 }
 export default listenPage;

@@ -74,6 +74,11 @@
   line-height: 50px;
   text-align: center;
 }
+.car-control-block {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
 .car {
   &__engine-btn {
     width: 30px;
@@ -126,6 +131,18 @@
 .car-blocks-wrapper {
   margin-top: 20px;
 }
+.contol-line {
+  border: 1px solid transparent;
+  transition: border 200ms ease-in;
+}
+.contol-line.selected {
+  border:1px solid#fffc60;
+}
+.car__img.selected {
+  border:1px solid#fffc60;
+}
+
+
 @keyframes racing {
   0% {
     transform: translateX(0);
