@@ -42,7 +42,7 @@ export function checkPage(): string {
   const amount = Number(allCarAmount);
   const allPage = Math.ceil(amount / 7);
   const page = Number(currentPage);
-  const result: string = page <= allPage ? `${page}` : "1";
+  const result: string = page <= allPage ? `${page}` : `${allPage}`;
   saveParam(LSParam.page, result, "function checkPage()");
   checkLSParam("checkPage()");
   // console.log(" page <= amount", page <= allPage);

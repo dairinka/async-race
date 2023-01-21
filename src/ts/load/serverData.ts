@@ -1,4 +1,3 @@
-import carsName from "../../asset/data/carsName";
 import { Path, PageQueryParams, CarData } from "../type";
 class ServerData {
   baseUrl: string;
@@ -67,6 +66,7 @@ class ServerData {
     }
     return result;
   }
+
   public async getCar(id: string): Promise<CarData> {
     console.log("!!!!!!!!!!!! get car from server !!!!!!!!!!!!!!");
     const carId = this.normalizeId(id);
@@ -107,12 +107,20 @@ class ServerData {
       color: carColor,
     };
     console.log("body", body);
-    const response: Response = await fetch(url, {
+    await fetch(url, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
+    });
+  }
+
+  public async removeCar(carId: string): Promise<void> {
+    const id = this.normalizeId(carId);
+    const url = `${this.baseUrl}${Path.garage}/${id}`;
+    await fetch(url, {
+      method: "DELETE",
     });
   }
 }

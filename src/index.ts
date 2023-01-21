@@ -89,3 +89,7 @@ export async function updateCarOnServer(
 export async function createCarOnServer(carData: CarData): Promise<void> {
   await serverData.createCar(carData);
 }
+
+export async function removeCarOnServer(carId: string): Promise<void> {
+  await serverData.removeCar(carId);
+}

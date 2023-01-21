@@ -18,6 +18,7 @@ import {
   getAllCarAmount,
   updateCarOnServer,
   createCarOnServer,
+  removeCarOnServer,
 } from "../..";
 import { showMessage } from "../message/message";
 
@@ -61,6 +62,7 @@ function listenPage() {
         selectCar(carId as string);
         break;
       case "remove":
+        removeCar(carId as string);
         break;
       case "start":
         break;
@@ -176,5 +178,14 @@ async function createNewCar() {
   updateAmountOnPage(amount);
   const page = getParam(LSParam.page, "createNewCar()");
   getDataForPage(page);
+}
+
+async function removeCar(carId: string) {
+  await removeCarOnServer(carId);
+  const amount = await getAllCarAmount();
+  updateAmountOnPage(amount);
+  const page = checkPage();
+  getDataForPage(page);
+  updateCountPage(page);
 }
 export default listenPage;
