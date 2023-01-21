@@ -93,3 +93,7 @@ export async function createCarOnServer(carData: CarData): Promise<void> {
 export async function removeCarOnServer(carId: string): Promise<void> {
   await serverData.removeCar(carId);
 }
+
+export function generateCarOnServer(arrData: CarData[]): void {
+  arrData.forEach(async (car) => await serverData.createCar(car));
+}

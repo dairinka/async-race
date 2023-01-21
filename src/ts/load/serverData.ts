@@ -1,12 +1,6 @@
 import { Path, PageQueryParams, CarData } from "../type";
 class ServerData {
   baseUrl: string;
-  // limit: number;
-  // constructor(...args: ServerTuple) {
-  //   const [limit, baseUrl] = args;
-  //   this.baseUrl = baseUrl;
-  //   this.limit = limit;
-  // }
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
   }

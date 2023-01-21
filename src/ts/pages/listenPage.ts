@@ -19,8 +19,11 @@ import {
   updateCarOnServer,
   createCarOnServer,
   removeCarOnServer,
+  generateCarOnServer,
 } from "../..";
 import { showMessage } from "../message/message";
+import carsName from "../../asset/data/carsName";
+import color from "../../asset/data/color";
 
 function listenPage() {
   const allWrapper = document.querySelector(".all-wrapper");
@@ -42,11 +45,12 @@ function listenPage() {
         prevPage();
         break;
       case "generate":
+        generateCar();
         break;
       case "garage":
         break;
       case "winners":
-        loadWinnerPage();
+        //loadWinnerPage();
         break;
       case "create":
         createNewCar();
@@ -65,6 +69,7 @@ function listenPage() {
         removeCar(carId as string);
         break;
       case "start":
+        startCar(carId as string);
         break;
       case "stop":
         break;
@@ -86,7 +91,6 @@ async function nextPage(): Promise<void> {
   } else {
     showMessage(`${currentPage} page is the last`);
   }
-  checkLSParam("nextPage()");
 }
 
 function prevPage(): void {
@@ -98,7 +102,6 @@ function prevPage(): void {
   } else {
     showMessage(`${currentPage} page is the first`);
   }
-  checkLSParam("prevPage()");
 }
 
 function newPage(page: string) {
@@ -136,7 +139,6 @@ function checkRemoveSelected(target: HTMLElement): void {
   if (target.closest("[data-type = 'update']") !== controlLine) {
     removeSelected();
   }
-  checkLSParam("checkRemoveSelected()");
 }
 
 function removeSelected(): void {
@@ -187,5 +189,31 @@ async function removeCar(carId: string) {
   const page = checkPage();
   getDataForPage(page);
   updateCountPage(page);
+}
+
+async function generateCar() {
+  const amountCarName = carsName.length - 1;
+  const amountColor = color.length - 1;
+  const amountGenerate = Number(Base.amountGenerate);
+  const arrCar = [];
+  for (let i = 1; i <= amountGenerate; i += 1) {
+    const randomName = carsName[randomNumber(amountCarName)];
+    const randomColor = color[randomNumber(amountColor)];
+    const carData = { name: randomName, color: randomColor };
+    arrCar.push(carData);
+  }
+  generateCarOnServer(arrCar);
+  const amount = await getAllCarAmount();
+  updateAmountOnPage(amount);
+  const page = getParam(LSParam.page, "createNewCar()");
+  getDataForPage(page);
+}
+
+function randomNumber(max: number): number {
+  return Math.floor(Math.random() * (max + 1));
+}
+
+function startCar(carId: string): void {
+  
 }
 export default listenPage;

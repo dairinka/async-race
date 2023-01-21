@@ -1,3 +1,5 @@
+import carsName from "../asset/data/carsName";
+
 export enum Path {
   garage = "/garage",
   engine = "/engine",
@@ -11,6 +13,7 @@ export enum Status {
 export enum Base {
   limitCars = "7",
   limitWinners = "10",
+  amountGenerate = "100",
 }
 
 export enum LSParam {
