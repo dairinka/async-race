@@ -56,32 +56,25 @@ async function load(): Promise<void> {
     }
     setTimeout(load, 1000);
   }
-  checkLSParam("load()");
 }
 export async function getAllCarAmount(): Promise<string> {
-  console.log("getAllCarAmount()");
   const amount = await serverData.getCarsAmount(startPageParams);
   saveParam(LSParam.allCarAmount, amount, "getAllCarAmount()");
-  checkLSParam("getAllCarAmount()");
   return amount;
 }
 
-export async function getDataForNewPage(page: string): Promise<void> {
-  console.log(`getDataForNewPage(page = ${page}: string)`);
+export async function getDataForPage(page: string): Promise<void> {
+  console.log("!!!!getDataForPage page =", page);
   const pageParams: PageQueryParams[] = [
     { _page: page },
     { _limit: Base.limitCars },
   ];
   const carsArray: CarData[] = await serverData.getCars(pageParams);
   loadDataToCarBlocks(carsArray);
-  checkLSParam("getDataForNewPage()");
 }
 
 export async function getCurrentCar(carId: string): Promise<CarData> {
-  console.log(`getCurrentCar(carId = ${carId}: string)`);
   const currentCar: CarData = await serverData.getCar(carId);
-  console.log("car data from server", currentCar);
-  checkLSParam("getCurrentCar()");
   return currentCar;
 }
 
@@ -91,4 +84,8 @@ export async function updateCarOnServer(
   carColor: string
 ): Promise<void> {
   await serverData.updateCar(carId, carName, carColor);
+}
+
+export async function createCarOnServer(carData: CarData): Promise<void> {
+  await serverData.createCar(carData);
 }

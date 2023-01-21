@@ -15,7 +15,8 @@ class ServerData {
   private generateQueryString(queryParams: PageQueryParams[]): string {
     const arr = queryParams.map((x) => {
       return Object.entries(x).reduce((acc, el) => {
-        return `${el[0]}=${el[1]}`;
+        const value = this.normalizeId(el[1]);
+        return `${el[0]}=${value}`;
       }, "");
     });
     return queryParams.length ? `?${arr.join("&")}}` : "";
@@ -51,6 +52,9 @@ class ServerData {
     //   carArr: carData,
     //   allAmountCar: String(allCarAmount),
     // };
+    console.log("??????? getCars from server");
+    console.log("url", url);
+    console.log("carData", carData);
     return carData;
   }
 

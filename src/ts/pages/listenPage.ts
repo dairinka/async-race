@@ -5,18 +5,19 @@ import {
   getParam,
   checkLSParam,
 } from "../localStorage/localStorage";
-import { LSParam, Base, InputType } from "../type";
-import { updateCountPage } from "../load/loadDataPage";
+import { LSParam, Base, InputType, CarData } from "../type";
+import { updateCountPage, updateAmountOnPage } from "../load/loadDataPage";
 import {
   clearInputData,
   getCarInputData,
   updateCarPageData,
 } from "../load/loadCarBlocks";
 import {
-  getDataForNewPage,
+  getDataForPage,
   getCurrentCar,
   getAllCarAmount,
   updateCarOnServer,
+  createCarOnServer,
 } from "../..";
 import { showMessage } from "../message/message";
 
@@ -100,7 +101,7 @@ function prevPage(): void {
 
 function newPage(page: string) {
   updateCountPage(page);
-  getDataForNewPage(page);
+  getDataForPage(page);
   saveParam(LSParam.page, page, "function newPage()");
   checkLSParam("newPage()");
 }
@@ -167,7 +168,13 @@ async function updateCar() {
   clearInputData(InputType.update);
 }
 
-function createNewCar() {
+async function createNewCar() {
   const [name = "", color] = getCarInputData(InputType.create);
+  const carData: CarData = { name, color };
+  await createCarOnServer(carData);
+  const amount = await getAllCarAmount();
+  updateAmountOnPage(amount);
+  const page = getParam(LSParam.page, "createNewCar()");
+  getDataForPage(page);
 }
 export default listenPage;
