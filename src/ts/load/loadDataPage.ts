@@ -8,6 +8,5 @@ export function loadGarageData(amount: string, page: string): void {
 
 export function updateCountPage(page: string): void {
   const currentPage = <HTMLElement>document.querySelector(".current-page");
-  console.log("page", page);
   currentPage.textContent = page;
 }

@@ -1,15 +1,30 @@
-import { checkPage, getParam, saveParam } from "../localStorage/localStorage";
-import { LSParam, Base, CarData } from "../type";
+import {
+  checkPage,
+  removeParam,
+  saveParam,
+  getParam,
+  checkLSParam,
+} from "../localStorage/localStorage";
+import { LSParam, Base, InputType } from "../type";
 import { updateCountPage } from "../load/loadDataPage";
-import { getDataForNewPage, getCurrentCar, getAllCarAmount } from "../..";
+import {
+  clearInputData,
+  getCarInputData,
+  updateCarPageData,
+} from "../load/loadCarBlocks";
+import {
+  getDataForNewPage,
+  getCurrentCar,
+  getAllCarAmount,
+  updateCarOnServer,
+} from "../..";
 import { showMessage } from "../message/message";
-import ServerData from "../load/serverData";
 
 function listenPage() {
   const allWrapper = document.querySelector(".all-wrapper");
   allWrapper?.addEventListener("click", (event: Event) => {
     const target = <HTMLElement>event.target;
-    removeSelected(target);
+    checkRemoveSelected(target);
     const targetData = target.dataset.btn;
     let car, carId;
     if (target.closest(".car") !== null) {
@@ -29,10 +44,13 @@ function listenPage() {
       case "garage":
         break;
       case "winners":
+        loadWinnerPage();
         break;
       case "create":
+        createNewCar();
         break;
       case "update":
+        updateCar();
         break;
       case "race":
         break;
@@ -40,7 +58,6 @@ function listenPage() {
         break;
       case "select":
         selectCar(carId as string);
-        console.log("carId", carId);
         break;
       case "remove":
         break;
@@ -50,6 +67,7 @@ function listenPage() {
         break;
     }
   });
+  checkLSParam("listenPage()");
 }
 
 async function nextPage(): Promise<void> {
@@ -65,6 +83,7 @@ async function nextPage(): Promise<void> {
   } else {
     showMessage(`${currentPage} page is the last`);
   }
+  checkLSParam("nextPage()");
 }
 
 function prevPage(): void {
@@ -76,12 +95,14 @@ function prevPage(): void {
   } else {
     showMessage(`${currentPage} page is the first`);
   }
+  checkLSParam("prevPage()");
 }
 
 function newPage(page: string) {
   updateCountPage(page);
   getDataForNewPage(page);
-  saveParam(LSParam.page, page);
+  saveParam(LSParam.page, page, "function newPage()");
+  checkLSParam("newPage()");
 }
 
 async function selectCar(carId: string) {
@@ -95,27 +116,58 @@ async function selectCar(carId: string) {
   );
   const carBlock = document.querySelector(`[data-id = '${carId}']`);
   const carImg = carBlock?.querySelector(".car__img");
-  // console.log("carBlock", carBlock);
-  // console.log("carImg", carImg);
   inputName.value = name;
   inputColor.value = color;
   controlLine.classList.add("selected");
   carImg?.classList.add("selected");
-  // console.log("controlLine", controlLine);
+  saveParam(LSParam.carId, carId, "function selectCar()");
+  // /////////////////////////////////
   // console.log("inputColor", inputColor);
+  checkLSParam("selectCar()");
 }
-function removeSelected(target: HTMLElement): void {
+
+function checkRemoveSelected(target: HTMLElement): void {
+  const controlLine = <HTMLElement>(
+    document.querySelector("[data-type = 'update']")
+  );
+  if (target.closest("[data-type = 'update']") !== controlLine) {
+    removeSelected();
+  }
+  checkLSParam("checkRemoveSelected()");
+}
+
+function removeSelected(): void {
   const selectedEls: NodeListOf<HTMLElement> = document.querySelectorAll(
     ".selected"
   );
-  const inputsOfControlLine: NodeListOf<HTMLElement> = document.querySelectorAll(
-    "[data-type = 'update'] .input"
-  );
-  if (
-    selectedEls.length > 0 &&
-    !Array.from(inputsOfControlLine).includes(target)
-  ) {
+  if (selectedEls.length > 0) {
     Array.from(selectedEls).forEach((el) => el.classList.remove("selected"));
+    removeParam(LSParam.carId);
   }
+}
+
+function loadWinnerPage() {
+  console.log(`loadWinnerPage()`);
+  const items = { ...localStorage };
+  for (const key in items) {
+    console.log("key in localStorage", key);
+    console.log("key in localStorage", localStorage.getItem(key));
+  }
+  checkLSParam("loadWinnerPage()");
+}
+
+async function updateCar() {
+  const carId = getParam(LSParam.carId, "updateCar()");
+  if (!carId) showMessage("Please, select a car!");
+  const [name, color] = getCarInputData(InputType.update);
+  await updateCarOnServer(carId, name, color);
+  const carData = await getCurrentCar(carId);
+  updateCarPageData(carData);
+  removeSelected();
+  clearInputData(InputType.update);
+}
+
+function createNewCar() {
+  const [name = "", color] = getCarInputData(InputType.create);
 }
 export default listenPage;

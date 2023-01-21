@@ -1,3 +1,4 @@
+import carsName from "../../asset/data/carsName";
 import { Path, PageQueryParams, CarData } from "../type";
 class ServerData {
   baseUrl: string;
@@ -29,14 +30,13 @@ class ServerData {
     }
     return true;
   }
+
   public async getCarsAmount(queryParams: PageQueryParams[]): Promise<string> {
     const url = `${this.baseUrl}${Path.garage}${this.generateQueryString(
       queryParams
     )}`;
     const response: Response = await fetch(url);
     const allCarAmount = response.headers.get("X-Total-Count");
-    console.log("response", response);
-    console.log("allCarAmount", allCarAmount);
     return String(allCarAmount);
   }
 
@@ -54,13 +54,25 @@ class ServerData {
     return carData;
   }
 
+  private normalizeId(id: string): number {
+    let result: number;
+    if (isNaN(Number(id))) {
+      result = JSON.parse(JSON.stringify(id)).slice(1, id.length - 1);
+    } else {
+      result = Number(id);
+    }
+    return result;
+  }
   public async getCar(id: string): Promise<CarData> {
-    const url = `${this.baseUrl}${Path.garage}/${id}`;
-
+    console.log("!!!!!!!!!!!! get car from server !!!!!!!!!!!!!!");
+    const carId = this.normalizeId(id);
+    const url = `${this.baseUrl}${Path.garage}/${carId}`;
+    console.log("id", id);
+    console.log("url", url);
     const response: Response = await fetch(url);
     const data: JSON = await response.json();
     const carData: CarData = JSON.parse(JSON.stringify(data));
-    console.log("carData", carData);
+    console.log("carData:", carData);
     return carData;
   }
 
@@ -75,8 +87,29 @@ class ServerData {
       body: JSON.stringify(body),
     });
     const data: JSON = await response.json();
-    console.log("data", data);
     return data;
+  }
+
+  public async updateCar(carId: string, carName: string, carColor: string) {
+    console.log("(((((((updateCar on server)))))))");
+    console.log("carId", carId);
+    console.log("carName", carName);
+    console.log("carColor", carColor);
+    const id = this.normalizeId(carId);
+    const url = `${this.baseUrl}${Path.garage}/${id}`;
+    console.log("url", url);
+    const body = {
+      name: carName,
+      color: carColor,
+    };
+    console.log("body", body);
+    const response: Response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
   }
 }
 

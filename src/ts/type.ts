@@ -16,6 +16,12 @@ export enum Base {
 export enum LSParam {
   page = "page",
   allCarAmount = "amount",
+  carId = "id",
+}
+
+export enum InputType {
+  update = "update",
+  create = "create",
 }
 
 export type ServerTuple = [limit: number, baseUrl: string];
