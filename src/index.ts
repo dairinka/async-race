@@ -19,15 +19,12 @@ import {
 } from "./ts/localStorage/localStorage";
 // //////////////////////////////////////////////////////
 checkLSParam("START");
-const params = {
-  baseUrl: "http://localhost:3000",
-};
 const startPageParams: PageQueryParams[] = [
   { _page: "1" },
   { _limit: Base.limitCars },
 ];
 
-const serverData = new ServerData(params.baseUrl);
+const serverData = new ServerData(Base.baseUrl);
 
 load();
 // /////////////////////////////////////////////////////

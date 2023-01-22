@@ -5,7 +5,15 @@ import {
   getParam,
   checkLSParam,
 } from "../localStorage/localStorage";
-import { LSParam, Base, InputType, CarData } from "../type";
+import {
+  LSParam,
+  Base,
+  InputType,
+  CarData,
+  EngineData,
+  ServerStatus,
+  ServerMessage,
+} from "../type";
 import { updateCountPage, updateAmountOnPage } from "../load/loadDataPage";
 import {
   clearInputData,
@@ -24,6 +32,9 @@ import {
 import { showMessage } from "../message/message";
 import carsName from "../../asset/data/carsName";
 import color from "../../asset/data/color";
+import { abortConnect, goCar, startEngine } from "../engine/controlEngine";
+import { animationCar, stopAnimation } from "../animation/animate";
+import AnimationCar from "../animation/animateCar";
 
 function listenPage() {
   const allWrapper = document.querySelector(".all-wrapper");
@@ -59,6 +70,7 @@ function listenPage() {
         updateCar();
         break;
       case "race":
+        //raceCars();
         break;
       case "reset":
         break;
@@ -213,7 +225,93 @@ function randomNumber(max: number): number {
   return Math.floor(Math.random() * (max + 1));
 }
 
-function startCar(carId: string): void {
-  
+// async function startCar(carId: string): Promise<void> {
+//   const startBtn = <HTMLElement>(
+//     document.querySelector(`[data-id="${carId}"] [data-btn="start"]`)
+//   );
+//   if (startBtn.hasAttribute("data-start")) {
+//     showMessage(ServerMessage.tooManyRequest, carId);
+//   } else {
+//     startBtn.dataset.start = "true";
+//     const engineData: EngineData = await startEngine(carId);
+//     animationCar(carId, engineData);
+//     try {
+//       const serverStatus = await goCar(carId);
+//       switch (serverStatus) {
+//         case ServerStatus.ok:
+//           break;
+//         case ServerStatus.tooManyRequest:
+//           showMessage(ServerMessage.tooManyRequest, carId);
+//           break;
+//         case ServerStatus.carStop:
+//           showMessage(ServerMessage.carStop, carId);
+//           stopAnimation();
+//           stopCar(carId);
+//           break;
+//       }
+//       console.log("serverStatus", serverStatus);
+//     } catch (err) {
+//       console.log(`I catch err =  ${err}`);
+//     }
+//   }
+// }
+async function startCar(carId: string): Promise<void> {
+  const carBlock = <HTMLElement>document.querySelector(`[data-id="${carId}"]`);
+  const startBtn = <HTMLElement>carBlock.querySelector(`[data-btn="start"]`);
+  if (startBtn.hasAttribute("data-start")) {
+    showMessage(ServerMessage.tooManyRequest, carId);
+  } else {
+    startBtn.dataset.start = "true";
+    const resetBtn = <HTMLElement>document.querySelector(`[data-btn="reset"]`);
+    const stopBtn = <HTMLElement>carBlock.querySelector(`[data-btn="stop"]`);
+    const engineData: EngineData = await startEngine(carId);
+    const animationCar = new AnimationCar(carId, engineData);
+    stopBtn.addEventListener("click", () => stopCar(animationCar, carId));
+    resetBtn.addEventListener("click", () => {
+      stopCar(animationCar, carId);
+      allCarsToStart();
+    });
+    animationCar.startAnimationCar();
+    const serverStatus = await goCar(carId);
+
+    switch (serverStatus) {
+      case ServerStatus.ok:
+        startBtn.removeAttribute("data-start");
+        break;
+      case ServerStatus.tooManyRequest:
+        showMessage(ServerMessage.tooManyRequest, carId);
+        break;
+      case ServerStatus.carStop:
+        showMessage(ServerMessage.carStop, carId);
+        stopCar(animationCar, carId);
+        fireCar(carId);
+        break;
+    }
+  }
+}
+function stopCar(animationCar: AnimationCar, carId: string): void {
+  const carBlock = <HTMLElement>document.querySelector(`[data-id="${carId}"]`);
+  const startBtn = <HTMLElement>carBlock.querySelector(`[data-btn="start"]`);
+  console.log("stoooop");
+  animationCar.stopAnimation();
+  startBtn.removeAttribute("data-start");
+  abortConnect();
+}
+
+function allCarsToStart(): void {
+  const carMoveEls: NodeListOf<HTMLElement> = document.querySelectorAll(
+    ".car-move"
+  );
+  Array.from(carMoveEls).forEach((car) => {
+    car.classList.remove("fire");
+    car.style.removeProperty("transform");
+  });
+}
+
+function fireCar(carId: string): void {
+  const carMove = <HTMLElement>(
+    document.querySelector(`[data-id="${carId}"] .car-move`)
+  );
+  carMove.classList.add("fire");
 }
 export default listenPage;

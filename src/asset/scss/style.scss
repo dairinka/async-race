@@ -107,8 +107,8 @@
   }
   .car-move{
     width: 100%;
-    animation-name: racing;
-    animation-duration: 2s;
+    // animation-name: racing;
+    // animation-duration: 2s;
     animation-timing-function: ease-in;
     animation-fill-mode: forwards;
   }
@@ -138,8 +138,21 @@
 .contol-line.selected {
   border:1px solid#fffc60;
 }
+
+.car-move {
+  position: relative;
+}
 .car__img.selected {
   border:1px solid#fffc60;
+}
+.car-move.fire:before {
+  content: url("../img/fire2_s.png");
+  position: absolute;
+  display: block;
+  width: 30px;
+  height: 35px;
+  top: -11px;
+  left: 71px;
 }
 
 

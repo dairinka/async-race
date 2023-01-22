@@ -1,11 +1,11 @@
-export function showMessage(message: string): void {
+export function showMessage(message: string, carId = ""): void {
   console.log("show message");
   const messageFragment = <DocumentFragment>document.createDocumentFragment();
   const messageWrapEl = <HTMLDivElement>document.createElement("div");
   const messageMessageEl = <HTMLParagraphElement>document.createElement("p");
   messageWrapEl.className = "message-wrap";
   messageMessageEl.className = "message";
-  messageMessageEl.textContent = message;
+  messageMessageEl.textContent = `${message} ${carId}`;
   messageWrapEl.append(messageMessageEl);
   messageFragment.append(messageWrapEl);
   document.body.append(messageFragment);

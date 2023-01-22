@@ -6,14 +6,29 @@ export enum Path {
   winners = "/winners",
 }
 
-export enum Status {
+export enum ServerStatus {
   ok = 200,
+  badRequest = 400,
+  notFound = 404,
+  tooManyRequest = 429,
+  carStop = 500,
 }
 
+export enum ServerMessage {
+  tooManyRequest = "Drive already in progress.",
+  carStop = "Engine was broken down.",
+}
+
+export enum EngineStatus {
+  start = "started",
+  stop = "stopped",
+  drive = "drive",
+}
 export enum Base {
   limitCars = "7",
   limitWinners = "10",
   amountGenerate = "100",
+  baseUrl = "http://localhost:3000",
 }
 
 export enum LSParam {
@@ -38,6 +53,10 @@ export interface CarData {
   id?: number;
 }
 
+export interface EngineData {
+  velocity: number;
+  distance: number;
+}
 // export interface AllCarData {
 //   carArr: CarData[];
 //   allAmountCar: string;
