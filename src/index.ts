@@ -3,7 +3,6 @@ import "./asset/scss/error.scss";
 import "./asset/scss/style.scss";
 import "./asset/scss/message.scss";
 import "./index.html";
-import Garage from "./ts/component/garage";
 import ServerData from "./ts/load/serverData";
 import { drawMainPage } from "./ts/pages/drawPage";
 import listenPage from "./ts/pages/listenPage";
@@ -18,7 +17,7 @@ import {
   checkLSParam,
 } from "./ts/localStorage/localStorage";
 // //////////////////////////////////////////////////////
-checkLSParam("START");
+//checkLSParam("START");
 const startPageParams: PageQueryParams[] = [
   { _page: "1" },
   { _limit: Base.limitCars },

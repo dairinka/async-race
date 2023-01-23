@@ -57,7 +57,15 @@ export interface EngineData {
   velocity: number;
   distance: number;
 }
-// export interface AllCarData {
-//   carArr: CarData[];
-//   allAmountCar: string;
-// }
+
+export interface Winner {
+  carId: string;
+  time: string;
+  status: ServerStatus;
+}
+
+export interface WinnersData {
+  carId?: string;
+  wins: number;
+  bestTime: string;
+}

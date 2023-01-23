@@ -1,4 +1,5 @@
 import { EngineData } from "../type";
+import AnimationCar from "./animateCar";
 
 let globalAnimateId: number;
 
@@ -25,4 +26,24 @@ export function animationCar(carId: string, engineData: EngineData): void {
 
 export function stopAnimation() {
   cancelAnimationFrame(globalAnimateId);
+}
+
+export function stopCar(animationCar: AnimationCar, carId: string): void {
+  const carBlock = <HTMLElement>document.querySelector(`[data-id="${carId}"]`);
+  const startBtn = <HTMLElement>carBlock.querySelector(`[data-btn="start"]`);
+  console.log("stoooop");
+  animationCar.stopAnimation();
+  startBtn.removeAttribute("data-start");
+}
+export function toStart(carId: string) {
+  const carBlock = <HTMLElement>document.querySelector(`[data-id="${carId}"]`);
+  const car = <HTMLElement>carBlock.querySelector(".car-move");
+  car.classList.remove("fire");
+  car.style.removeProperty("transform");
+}
+export function fireCar(carId: string): void {
+  const carMove = <HTMLElement>(
+    document.querySelector(`[data-id="${carId}"] .car-move`)
+  );
+  carMove.classList.add("fire");
 }
