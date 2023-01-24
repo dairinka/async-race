@@ -247,7 +247,7 @@ async function generateCar(): Promise<void> {
     generateCarOnServer(arrCar);
     const amount = await getAllCarAmount();
     updateAmountOnPage(amount);
-    const page = getParam(LSParam.page);
+    const page = JSON.parse(getParam(LSParam.page));
     const allPage: number = Math.ceil(Number(amount) / Number(Base.limitCars));
     getDataForPage(page);
     checkActivePageBtn(Number(page), allPage);
