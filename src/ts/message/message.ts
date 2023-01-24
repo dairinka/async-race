@@ -14,8 +14,7 @@ export function showMessage(message: string, carId = ""): void {
 
 export function clearMessage(): void {
   const messageWrapEl = <HTMLElement>document.querySelector(".message-wrap");
-  messageWrapEl.remove();
-  console.log("delete message");
+  messageWrapEl?.remove();
 }
 
 export function showWinner(carId: string, time: string): void {
@@ -34,5 +33,5 @@ export function showWinner(carId: string, time: string): void {
   messageWrapEl.append(messageMessageEl);
   messageFragment.append(messageWrapEl);
   document.body.append(messageFragment);
-  //setTimeout(clearMessage, 3000);
+  setTimeout(clearMessage, 5000);
 }

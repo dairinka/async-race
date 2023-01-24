@@ -2,6 +2,8 @@ import "./asset/scss/zero.scss";
 import "./asset/scss/error.scss";
 import "./asset/scss/style.scss";
 import "./asset/scss/message.scss";
+import "./asset/scss/winners.scss";
+import "./asset/scss/common.scss";
 import "./index.html";
 import ServerData from "./ts/load/serverData";
 import { drawMainPage } from "./ts/pages/drawPage";
@@ -9,7 +11,7 @@ import listenPage from "./ts/pages/listenPage";
 import { Base, LSParam, PageQueryParams, CarData } from "./ts/type";
 import { clearError, showError } from "./ts/error/showError";
 import { loadDataToCarBlocks } from "./ts/load/loadCarBlocks";
-import { loadGarageData } from "./ts/load/loadDataPage";
+import { loadGarageData, checkActivePageBtn } from "./ts/load/loadDataPage";
 import {
   saveParam,
   getParam,
@@ -35,17 +37,19 @@ async function load(): Promise<void> {
       clearError();
     }
     const allAmountCar = await getAllCarAmount();
-    const page = checkPage();
+    const curPage = checkPage();
     const pageParams: PageQueryParams[] = [
-      { _page: page },
+      { _page: curPage },
       { _limit: Base.limitCars },
     ];
     const carsArray: CarData[] = await serverData.getCars(pageParams);
     saveParam(LSParam.allCarAmount, allAmountCar, "function load()");
     drawMainPage();
     loadDataToCarBlocks(carsArray);
-    loadGarageData(allAmountCar, page);
+    loadGarageData(allAmountCar, curPage);
     listenPage();
+    const [page, allPage] = await getPageAndAllPage();
+    checkActivePageBtn(page, allPage);
   } else {
     if (!document.querySelector(".error-wrap")) {
       showError("Error: connect to server");
@@ -92,4 +96,14 @@ export async function removeCarOnServer(carId: string): Promise<void> {
 
 export function generateCarOnServer(arrData: CarData[]): void {
   arrData.forEach(async (car) => await serverData.createCar(car));
+}
+
+export async function getPageAndAllPage(): Promise<number[]> {
+  const allAmountCar: string = await getAllCarAmount();
+  const currentPage: string = checkPage();
+  const page = Number(currentPage);
+  const allPage: number = Math.ceil(
+    Number(allAmountCar) / Number(Base.limitCars)
+  );
+  return [page, allPage];
 }

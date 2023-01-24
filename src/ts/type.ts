@@ -31,10 +31,22 @@ export enum Base {
   baseUrl = "http://localhost:3000",
 }
 
+export enum WinnersSort {
+  id = "id",
+  wins = "wins",
+  time = "time",
+}
+
+export enum SortOrder {
+  up = "ASC",
+  down = "DESC",
+}
+
 export enum LSParam {
   page = "page",
   allCarAmount = "amount",
   carId = "id",
+  winPage = "winPage",
 }
 
 export enum InputType {
@@ -65,7 +77,7 @@ export interface Winner {
 }
 
 export interface WinnersData {
-  carId?: string;
+  id?: number;
   wins: number;
-  bestTime: string;
+  time: number;
 }

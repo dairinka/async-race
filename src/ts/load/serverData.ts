@@ -41,13 +41,6 @@ class ServerData {
     const response: Response = await fetch(url);
     const data: string = await response.json();
     const carData: CarData[] = JSON.parse(JSON.stringify(data));
-    // const allCarData: AllCarData = {
-    //   carArr: carData,
-    //   allAmountCar: String(allCarAmount),
-    // };
-    console.log("??????? getCars from server");
-    console.log("url", url);
-    console.log("carData", carData);
     return carData;
   }
 
@@ -62,15 +55,11 @@ class ServerData {
   }
 
   public async getCar(id: string): Promise<CarData> {
-    console.log("!!!!!!!!!!!! get car from server !!!!!!!!!!!!!!");
     const carId = this.normalizeId(id);
     const url = `${this.baseUrl}${Path.garage}/${carId}`;
-    console.log("id", id);
-    console.log("url", url);
     const response: Response = await fetch(url);
     const data: JSON = await response.json();
     const carData: CarData = JSON.parse(JSON.stringify(data));
-    console.log("carData:", carData);
     return carData;
   }
 

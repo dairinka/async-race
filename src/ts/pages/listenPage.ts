@@ -14,8 +14,13 @@ import {
   ServerStatus,
   ServerMessage,
   Winner,
+  WinnersData,
 } from "../type";
-import { updateCountPage, updateAmountOnPage } from "../load/loadDataPage";
+import {
+  updateCountPage,
+  updateAmountOnPage,
+  checkActivePageBtn,
+} from "../load/loadDataPage";
 import {
   clearInputData,
   getCarInputData,
@@ -29,19 +34,21 @@ import {
   createCarOnServer,
   removeCarOnServer,
   generateCarOnServer,
+  getPageAndAllPage,
 } from "../..";
 import { showMessage, showWinner } from "../message/message";
 import carsName from "../../asset/data/carsName";
 import color from "../../asset/data/color";
-// import {
-//   abortConnect,
-//   goCar,
-//   newConnect,
-//   startEngine,
-// } from "../engine/controlEngine";
 import { stopCar, fireCar, toStart } from "../animation/animate";
 import AnimationCar from "../animation/animateCar";
 import Engine from "../engine/engine";
+import {
+  loadWinnerPage,
+  getWinner,
+  createWinner,
+  updateWinner,
+  deleteWinner,
+} from "../load/loadWinners";
 
 function listenPage() {
   const allWrapper = document.querySelector(".all-wrapper");
@@ -68,7 +75,7 @@ function listenPage() {
       case "garage":
         break;
       case "winners":
-        //loadWinnerPage();
+        loadWinnerPage();
         break;
       case "create":
         createNewCar();
@@ -98,29 +105,37 @@ function listenPage() {
 }
 
 async function nextPage(): Promise<void> {
-  const allAmountCar: string = await getAllCarAmount();
-  const currentPage: string = checkPage();
-  const page = Number(currentPage);
-  const allPage: number = Math.ceil(
-    Number(allAmountCar) / Number(Base.limitCars)
-  );
+  // const allAmountCar: string = await getAllCarAmount();
+  // const currentPage: string = checkPage();
+  // const page = Number(currentPage);
+  // const allPage: number = Math.ceil(
+  //   Number(allAmountCar) / Number(Base.limitCars)
+  // );
+  const [page, allPage] = await getPageAndAllPage();
   if (page + 1 <= allPage) {
     const nextPage = String(page + 1);
     newPage(nextPage);
   } else {
-    showMessage(`${currentPage} page is the last`);
+    showMessage(`${page} page is the last`);
   }
+  checkActivePageBtn(page + 1, allPage);
 }
 
-function prevPage(): void {
-  const currentPage: string = checkPage();
-  const page = Number(currentPage);
+async function prevPage(): Promise<void> {
+  // const allAmountCar: string = await getAllCarAmount();
+  // const currentPage: string = checkPage();
+  // const page = Number(currentPage);
+  // const allPage: number = Math.ceil(
+  //   Number(allAmountCar) / Number(Base.limitCars)
+  // );
+  const [page, allPage] = await getPageAndAllPage();
   if (page - 1 > 0) {
-    const nextPage = String(page - 1);
-    newPage(nextPage);
+    const prevPage = String(page - 1);
+    newPage(prevPage);
   } else {
-    showMessage(`${currentPage} page is the first`);
+    showMessage(`${page} page is the first`);
   }
+  checkActivePageBtn(page - 1, allPage);
 }
 
 function newPage(page: string) {
@@ -139,8 +154,10 @@ async function selectCar(carId: string) {
   const inputColor = <HTMLInputElement>(
     controlLine?.querySelector(".color-input")
   );
-  const carBlock = document.querySelector(`[data-id = '${carId}']`);
-  const carImg = carBlock?.querySelector(".car__img");
+  const carBlock = <HTMLElement>(
+    document.querySelector(`[data-id = '${carId}']`)
+  );
+  const carImg = <HTMLElement>carBlock?.querySelector(".car__img");
   inputName.value = name;
   inputColor.value = color;
   controlLine.classList.add("selected");
@@ -165,16 +182,6 @@ function removeSelected(): void {
     Array.from(selectedEls).forEach((el) => el.classList.remove("selected"));
     removeParam(LSParam.carId);
   }
-}
-
-function loadWinnerPage() {
-  console.log(`loadWinnerPage()`);
-  const items = { ...localStorage };
-  for (const key in items) {
-    console.log("key in localStorage", key);
-    console.log("key in localStorage", localStorage.getItem(key));
-  }
-  checkLSParam("loadWinnerPage()");
 }
 
 async function updateCar() {
@@ -205,6 +212,7 @@ async function removeCar(carId: string) {
   const page = checkPage();
   getDataForPage(page);
   updateCountPage(page);
+  await deleteWinner(carId);
 }
 
 async function generateCar() {
@@ -261,53 +269,14 @@ async function startCar(carId: string): Promise<void> {
           startBtn.removeAttribute("data-start");
           break;
         case ServerStatus.tooManyRequest:
-          //showMessage(ServerMessage.tooManyRequest, carId);
           break;
         case ServerStatus.carStop:
-          // showMessage(ServerMessage.carStop, carId);
-          // stopCar(animationCar, carId);
-          // fireCar(carId);
           break;
       }
-    } catch {
-      console.log("I try to catch error");
-    }
+    } catch {}
   }
 }
 
-async function onlyAnimation(
-  carId: string,
-  engineData: EngineData
-): Promise<void> {
-  const resetBtn = <HTMLElement>document.querySelector(`[data-btn="reset"]`);
-  const carBlock = <HTMLElement>document.querySelector(`[data-id="${carId}"]`);
-  const startBtn = <HTMLElement>carBlock.querySelector(`[data-btn="start"]`);
-  const stopBtn = <HTMLElement>carBlock.querySelector(`[data-btn="stop"]`);
-  const animationCar = new AnimationCar(carId, engineData);
-  stopBtn.addEventListener("click", () => stopCar(animationCar, carId));
-  resetBtn.addEventListener("click", () => {
-    stopCar(animationCar, carId);
-    //abortConnect();
-    allCarsToStart();
-  });
-  animationCar.startAnimationCar();
-  // const serverStatus = await goCar(carId);
-
-  // switch (serverStatus) {
-  //   case ServerStatus.ok:
-  //     startBtn.removeAttribute("data-start");
-  //     break;
-  //   case ServerStatus.tooManyRequest:
-  //     showMessage(ServerMessage.tooManyRequest, carId);
-  //     break;
-  //   case ServerStatus.carStop:
-  //     showMessage(ServerMessage.carStop, carId);
-  //     stopCar(animationCar, carId);
-  //     fireCar(carId);
-  //     break;
-  // }
-  //return serverStatus;
-}
 async function raceCars(): Promise<void> {
   const carsOnPage: NodeListOf<HTMLElement> = document.querySelectorAll(".car");
   const carsArr: HTMLElement[] = Array.from(carsOnPage);
@@ -318,7 +287,6 @@ async function raceCars(): Promise<void> {
   });
 
   const enginePromiseArr = carsArr.map((car, ind) => {
-    const carId = <string>car.dataset.id;
     const f: Promise<EngineData> = engineArr[ind].start();
     return f;
   });
@@ -331,42 +299,23 @@ async function raceCars(): Promise<void> {
   });
 
   const animationPromiseArr = carsArr.map((car, ind) => {
-    //const carId = <string>car.dataset.id;
-    //const engineData: EngineData = engineDataArr[ind];
     const animationCar: AnimationCar = animationArr[ind];
     return animationCar.startAnimationCar();
   });
-  const startTime = performance.now();
-  //const first = false;
   await Promise.all(animationPromiseArr);
   // /////////Listen server
   const driveArr: Promise<ServerStatus | Winner>[] = carsArr.map((car, ind) => {
-    //const carId = <string>car.dataset.id;
     const animationCar: AnimationCar = animationArr[ind];
-    //const serverStatus = engineArr[ind].goRace(animationCar);
     return engineArr[ind].goRace(animationCar);
   });
   try {
     const first = await Promise.any<ServerStatus | Winner>(driveArr);
     const { carId, time } = first as Winner;
-    console.log("first", first);
     showWinner(carId, time);
+    addWinner(carId, time);
   } catch {
     showMessage("No winners");
   }
-  //console.log("first", first);
-  // const serverStatusArr: ServerStatus[] = await Promise.all(driveArr);
-  // // /////////////Result race
-  // const resultArr: ResultRace[] = carsArr.map((car, ind) => {
-  //   const carId = <string>car.dataset.id;
-  //   const serverStatus: ServerStatus = serverStatusArr[ind];
-  //   const resultRace: ResultRace = {
-  //     carId: carId,
-  //     status: serverStatus,
-  //   };
-  //   return resultRace;
-  // });
-  // console.log("resultArr", resultArr);
   // ///////////////Reset btn
   const resetBtn = <HTMLElement>document.querySelector(`[data-btn="reset"]`);
   resetBtn.addEventListener("click", () => {
@@ -380,28 +329,32 @@ async function raceCars(): Promise<void> {
     Array.from(startBtnEls).forEach((startBtn) => {
       startBtn.removeAttribute("data-start");
     });
-    // engineArr.forEach((engine) => {
-    //   engine.abortConnect();
-    // });
     allCarsToStart();
   });
-  console.log("serverStatusArr");
-  // console.log(serverStatusArr);
 }
 
-// function processingResult(arr: ResultRace[]) {
-//   arr.filter(({ status }) => status === ServerStatus.ok);
-// }
-// function stopCar(animationCar: AnimationCar, carId: string): void {
-//   const carBlock = <HTMLElement>document.querySelector(`[data-id="${carId}"]`);
-//   const startBtn = <HTMLElement>carBlock.querySelector(`[data-btn="start"]`);
-//   const car = <HTMLElement>document.querySelector(".car-move");
-//   console.log("stoooop");
-//   animationCar.stopAnimation();
-//   startBtn.removeAttribute("data-start");
-//   car.classList.remove("fire");
-//   car.style.removeProperty("transform");
-// }
+async function addWinner(carId: string, currentTime: string): Promise<void> {
+  const response: WinnersData = await getWinner(carId);
+  if (Object.keys(response).length > 0) {
+    let { wins, time } = response;
+    wins += 1;
+    const bestTimeNum = Number(time);
+    const newTime = Number(currentTime);
+    time = [bestTimeNum, newTime].sort((a, b) => a - b)[0];
+    const newWinnerData: WinnersData = {
+      wins: wins,
+      time: time,
+    };
+    await updateWinner(carId, newWinnerData);
+  } else {
+    const winData: WinnersData = {
+      id: Number(carId),
+      wins: 1,
+      time: Number(currentTime),
+    };
+    await createWinner(winData);
+  }
+}
 
 function allCarsToStart(): void {
   const carMoveEls: NodeListOf<HTMLElement> = document.querySelectorAll(

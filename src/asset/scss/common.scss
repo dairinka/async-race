@@ -1,0 +1,19 @@
+.btn {
+  border-bottom: 3px solid grey;
+  border-right: 3px solid grey;
+}
+.pagination-line .btn.non-active{
+  background: gray;
+}
+.pagination-line .btn.non-active:hover{
+  filter: brightness(100%);
+}
+.non-active {
+  background: gray;
+}
+.non-active:hover {
+  filter: brightness(100%);
+}
+.green {
+
+}
