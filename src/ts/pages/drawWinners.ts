@@ -87,7 +87,8 @@ export async function drawWinnersTable(
     const th4 = <HTMLTableCellElement>document.createElement("th");
     const th5 = <HTMLTableCellElement>document.createElement("th");
     tr.className = "win-row";
-    th1.textContent = String(ind + startNumber);
+    th1.setAttribute("data-order", "true");
+    th1.textContent = `${ind + startNumber}`;
     getCarSVG(th2, color, 50, 25);
     th3.textContent = name;
     th4.textContent = wins.toString();

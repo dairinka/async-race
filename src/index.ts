@@ -30,20 +30,22 @@ async function load(): Promise<void> {
     if (document.querySelector(".error-wrap")) {
       clearError();
     }
-    const allAmountCar = await getAllCarAmount();
-    const curPage = checkPage();
-    const pageParams: PageQueryParams[] = [
-      { _page: curPage },
-      { _limit: Base.limitCars },
-    ];
-    const carsArray: CarData[] = await serverData.getCars(pageParams);
-    saveParam(LSParam.allCarAmount, allAmountCar);
-    drawMainPage();
-    loadDataToCarBlocks(carsArray);
-    loadGarageData(allAmountCar, curPage);
-    listenPage();
-    const [page, allPage] = await getPageAndAllPage();
-    checkActivePageBtn(page, allPage);
+    try {
+      const allAmountCar = await getAllCarAmount();
+      const curPage = checkPage();
+      const pageParams: PageQueryParams[] = [
+        { _page: curPage },
+        { _limit: Base.limitCars },
+      ];
+      const carsArray: CarData[] = await serverData.getCars(pageParams);
+      saveParam(LSParam.allCarAmount, allAmountCar);
+      drawMainPage();
+      loadDataToCarBlocks(carsArray);
+      loadGarageData(allAmountCar, curPage);
+      listenPage();
+      const [page, allPage] = await getPageAndAllPage();
+      checkActivePageBtn(page, allPage);
+    } catch {}
   } else {
     if (!document.querySelector(".error-wrap")) {
       showError("Error: connect to server");
@@ -62,8 +64,10 @@ export async function getDataForPage(page: string): Promise<void> {
     { _page: page },
     { _limit: Base.limitCars },
   ];
-  const carsArray: CarData[] = await serverData.getCars(pageParams);
-  loadDataToCarBlocks(carsArray);
+  try {
+    const carsArray: CarData[] = await serverData.getCars(pageParams);
+    loadDataToCarBlocks(carsArray);
+  } catch {}
 }
 
 export async function getCurrentCar(carId: string): Promise<CarData> {
@@ -76,19 +80,27 @@ export async function updateCarOnServer(
   carName: string,
   carColor: string
 ): Promise<void> {
-  await serverData.updateCar(carId, carName, carColor);
+  try {
+    await serverData.updateCar(carId, carName, carColor);
+  } catch {}
 }
 
 export async function createCarOnServer(carData: CarData): Promise<void> {
-  await serverData.createCar(carData);
+  try {
+    await serverData.createCar(carData);
+  } catch {}
 }
 
 export async function removeCarOnServer(carId: string): Promise<void> {
-  await serverData.removeCar(carId);
+  try {
+    await serverData.removeCar(carId);
+  } catch {}
 }
 
 export function generateCarOnServer(arrData: CarData[]): void {
-  arrData.forEach(async (car) => await serverData.createCar(car));
+  try {
+    arrData.forEach(async (car) => await serverData.createCar(car));
+  } catch {}
 }
 
 export async function getPageAndAllPage(): Promise<number[]> {

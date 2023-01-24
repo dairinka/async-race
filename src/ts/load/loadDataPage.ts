@@ -26,12 +26,21 @@ export function activeBtn(btn: HTMLElement): void {
 export function checkActivePageBtn(page: number, allPage: number) {
   const nextBtn = <HTMLElement>document.querySelector("[data-btn='next']");
   const prevtBtn = <HTMLElement>document.querySelector("[data-btn='prev']");
-  if (page === allPage) {
+  if (page == allPage) {
     nonActiveBtn(nextBtn);
-  } else if (page === 1) {
+  }
+  if (page == 1) {
     nonActiveBtn(prevtBtn);
-  } else {
+  }
+  if (page >= 1 && page < allPage) {
     activeBtn(nextBtn);
+  }
+  if (page > 1 && page <= allPage) {
     activeBtn(prevtBtn);
   }
+}
+
+export function isRaceActive(): boolean {
+  const raceBtn = <HTMLElement>document.querySelector("[data-btn='race']");
+  return raceBtn.hasAttribute("data-active");
 }

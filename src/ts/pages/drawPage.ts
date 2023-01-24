@@ -161,7 +161,6 @@ function getFooter(parentElement: HTMLElement): void {
   parentElement.innerHTML = ` <div class="footer__container">
                                   <div>
                                     <a href="https://rs.school/" class="footer__rs-logo">
-                                      <img src="./assets/rs_school.svg" alt="rs logo">
                                     </a>
                                   </div>
                                   <div class="footer__title">
@@ -170,7 +169,7 @@ function getFooter(parentElement: HTMLElement): void {
                                   <div class="footer__github">
                                     <span class="footer__creators">
                                       <span class="footer__github-logo">
-                                        <img src="./asset/github-logo.svg" alt="github logo">
+                                        <!--<img src="../assets/github-logo.svg" alt="github logo">-->
                                       </span>
                                       <a href="https://github.com/dairinka" class="footer__contributor">@dairinka</a>
                                     </span>

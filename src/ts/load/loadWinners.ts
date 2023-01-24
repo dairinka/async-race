@@ -1,24 +1,29 @@
 import { drawWinnersPage, drawWinnersTable } from "../pages/drawWinners";
-import { LSParam, SortOrder, WinnersData, WinnersSort } from "../type";
+import { Base, LSParam, SortOrder, WinnersData, WinnersSort } from "../type";
 import Winners from "../winners/winners";
 import { getStartNumber, listenWinners } from "../pages/listenWinners";
 import { hiddenMainPage } from "../pages/drawPage";
 import { getParam, saveParam } from "../localStorage/localStorage";
+import { checkActivePageBtn } from "./loadDataPage";
 const winners = new Winners();
 
-export async function loadWinnerPage() {
+export async function loadWinnerPage(): Promise<void> {
   if (!getParam(LSParam.winPage)) {
     saveParam(LSParam.winPage, "1");
   }
-  const page: number = JSON.parse(getParam(LSParam.winPage));
-  const winData: WinnersData[] = await getWinners(page);
-  const amountWins: string = await getAmountWinners();
-  const startNumber = getStartNumber(page);
-  drawWinnersPage();
-  loadWinnersData(amountWins, page);
-  drawWinnersTable(winData, startNumber);
-  listenWinners();
-  hiddenMainPage();
+  try {
+    const page: number = JSON.parse(getParam(LSParam.winPage));
+    const winData: WinnersData[] = await getWinners(page);
+    const amountWins: string = await getAmountWinners();
+    const allPage = Math.ceil(Number(amountWins) / Number(Base.limitWinners));
+    const startNumber = getStartNumber(page);
+    drawWinnersPage();
+    loadWinnersData(amountWins, page);
+    await drawWinnersTable(winData, startNumber);
+    listenWinners();
+    hiddenMainPage();
+    checkActivePageBtn(page, allPage);
+  } catch {}
 }
 export async function getWinners(
   page: number,
@@ -43,11 +48,15 @@ export async function updateWinner(
   carId: string,
   winnerData: WinnersData
 ): Promise<void> {
-  await winners.updateWinner(carId, winnerData);
+  try {
+    await winners.updateWinner(carId, winnerData);
+  } catch {}
 }
 
 export async function deleteWinner(carId: string): Promise<void> {
-  await winners.deleteWinner(carId);
+  try {
+    await winners.deleteWinner(carId);
+  } catch {}
 }
 
 export async function allWinAmount(): Promise<string> {

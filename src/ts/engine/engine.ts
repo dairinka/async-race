@@ -1,13 +1,10 @@
 import { fireCar, stopCar } from "../animation/animate";
 import { Path, EngineData, EngineStatus, ServerStatus, Winner } from "../type";
 import AnimationCar from "../animation/animateCar";
-import { ServerMessage } from "../type";
-import { showMessage } from "../message/message";
 class Engine {
   baseUrl: string;
   controller: AbortController;
   carId: string;
-  //signal: AbortController["signal"];
   constructor(baseUrl: string, carId: string) {
     this.baseUrl = baseUrl;
     this.controller = new AbortController();
@@ -72,7 +69,6 @@ class Engine {
           resolve(result);
           break;
         case ServerStatus.tooManyRequest:
-          showMessage(ServerMessage.tooManyRequest);
           break;
         case ServerStatus.carStop:
           stopCar(animationCar, this.carId);
