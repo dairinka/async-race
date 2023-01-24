@@ -6,6 +6,7 @@ import {
 import { getParam, saveParam } from "../localStorage/localStorage";
 import { LSParam, SortOrder, WinnersData, WinnersSort, Base } from "../type";
 import { drawWinnersTable } from "./drawWinners";
+import { checkActivePageBtn } from "../load/loadDataPage";
 
 export function listenWinners() {
   const winWrap = <HTMLElement>document.querySelector(".winners-wrapper");
@@ -33,14 +34,18 @@ export function listenWinners() {
   });
 }
 
-async function sortOfWin(page: number) {
+async function sortOfWin(page: number): Promise<void> {
   const winCell = <HTMLElement>document.querySelector("[data-btn='Win']");
   if (winCell.dataset.order !== "true") {
     winCell.setAttribute("data-order", "true");
-    await sortWinners(page, WinnersSort.wins, SortOrder.up);
+    try {
+      await sortWinners(page, WinnersSort.wins, SortOrder.up);
+    } catch {}
   } else {
     winCell.setAttribute("data-order", "false");
-    await sortWinners(page, WinnersSort.wins, SortOrder.down);
+    try {
+      await sortWinners(page, WinnersSort.wins, SortOrder.down);
+    } catch {}
   }
 }
 
@@ -61,7 +66,7 @@ async function sortWinners(
 ): Promise<void> {
   const winData: WinnersData[] = await getWinners(page, sort, order);
   const startNumber: number = getStartNumber(page);
-  drawWinnersTable(winData, startNumber);
+  await drawWinnersTable(winData, startNumber);
 }
 
 function showGarage() {
@@ -78,20 +83,24 @@ async function nextPage() {
     const nextPage = page + 1;
     const winDataArr: WinnersData[] = await getWinners(nextPage);
     const startNumber: number = getStartNumber(nextPage);
-    drawWinnersTable(winDataArr, startNumber);
+    await drawWinnersTable(winDataArr, startNumber);
     saveParam(LSParam.winPage, nextPage);
     updateCountPage(nextPage);
+    checkActivePageBtn(nextPage, allPage);
   }
 }
 async function prevPage() {
   const page = Number(JSON.parse(getParam(LSParam.winPage)));
+  const allAmountWin: string = await getAmountWinners();
+  const allPage = Math.ceil(Number(allAmountWin) / Number(Base.limitWinners));
   if (page > 1) {
     const prevPage = page - 1;
     const winDataArr: WinnersData[] = await getWinners(prevPage);
     const startNumber: number = getStartNumber(prevPage);
-    drawWinnersTable(winDataArr, startNumber);
+    await drawWinnersTable(winDataArr, startNumber);
     saveParam(LSParam.winPage, prevPage);
     updateCountPage(prevPage);
+    checkActivePageBtn(prevPage, allPage);
   }
 }
 

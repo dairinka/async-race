@@ -61,6 +61,7 @@
 .pagination-line {
   display:flex;
   align-items: center;
+  margin-top: 20px;
 }
 .pagination-line .btn {
   background: #fffc60;
@@ -87,7 +88,6 @@
     text-align: center;
   }
   &__img {
-    //content: url("../img/car.svg");
     width: 100px;
   }
   &__flag-img {
@@ -107,8 +107,6 @@
   }
   .car-move{
     width: 100%;
-    // animation-name: racing;
-    // animation-duration: 2s;
     animation-timing-function: ease-in;
     animation-fill-mode: forwards;
   }
@@ -123,7 +121,6 @@
   }
   &__name {
     color: #ffffff;
-    //font-size: 1.5vw;
     font-weight: normal;
     margin-left: 15px;
   }
@@ -158,6 +155,22 @@
 .hidden {
   display: none;
 }
+.btn[data-btn="stop"] {
+  background: rgb(240, 55, 55);
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  padding: 0;
+  line-height: 30px;
+}
+.btn[data-btn="start"] {
+  background: #48ffa5;
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  padding: 0;
+  line-height: 30px;
+}
 
 @keyframes racing {
   0% {
@@ -170,7 +183,7 @@
 
 @media screen and (min-width: 1200px) {
   .all-wrapper {
-    font-size: 18px;
+    font-size: 16px;
 
   }
   .btn {
