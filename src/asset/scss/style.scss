@@ -1,0 +1,221 @@
+.all-wrapper {
+  font-size: 1.5vw;
+  background: #1a1a1a;
+  padding: 1vw;
+}
+.btn {
+  background: #30b96e;
+  padding: 10px 0;
+  text-align: center;
+  width: 10vw;
+  max-width: 100px;
+  min-width: 70px;
+  border: 1px solid #0d3f24;
+  border-radius: 5px;
+  margin: 0.3vw;
+  transition: 200ms ease-in;
+
+  &:hover {
+    filter: brightness(150%);
+  }
+}
+
+.input {
+  height: 35px;
+  margin: 0.5vw; 
+  border-radius: 5px; 
+}
+
+.generate-btn {
+  width: 140px;
+  max-width: 140px;
+}
+
+.contol-line {
+  display: flex;
+  align-items: center;
+
+  .name-input {
+    padding-left: 5px;
+  }
+}
+.h2 {
+  display: flex;
+  align-items: baseline;
+  color: #ffffff;
+  font-size: 5vw;
+  margin: 50px 0 20px;
+}
+.all-amount {
+  display: flex;
+  align-items: baseline;
+  font-size: 3.5vw;
+  color: #a3a3a3;
+  margin-left: 50px;
+}
+.all-amount::before {
+  content: url("../img/car.svg");
+  margin-right:10px;
+  margin-bottom: -5px;
+}
+.pagination-line {
+  display:flex;
+  align-items: center;
+  margin-top: 20px;
+}
+.pagination-line .btn {
+  background: #fffc60;
+}
+.current-page {
+  margin: 0 20px;
+  background: #ffffff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+}
+.car-control-block {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+.car {
+  &__engine-btn {
+    width: 30px;
+    min-width: 30px;
+    padding: 10px 0;
+    text-align: center;
+  }
+  &__img {
+    width: 100px;
+  }
+  &__flag-img {
+   content: url("../img/finish.svg"); 
+   max-height: 60px;
+   margin-bottom: 10px;
+   position: absolute;
+   right: 5rem;
+  }
+  .racing-block {
+    display: flex;
+    width: 100%;
+    width: 97vw;
+    align-items: flex-end;
+    position: relative;
+    overflow: hidden;
+  }
+  .car-move{
+    width: 100%;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+  }
+  &__land-line {
+    width: 100%;
+    border-top: 2px dotted #ffffff;
+    margin-top: -10px;
+  }
+  &__control-line {
+    display: flex;
+    align-items: center;
+  }
+  &__name {
+    color: #ffffff;
+    font-weight: normal;
+    margin-left: 15px;
+  }
+}
+.car-blocks-wrapper {
+  margin-top: 20px;
+}
+.contol-line {
+  border: 1px solid transparent;
+  transition: border 200ms ease-in;
+}
+.contol-line.selected {
+  border:1px solid#fffc60;
+}
+
+.car-move {
+  position: relative;
+}
+.car__img.selected {
+  border:1px solid#fffc60;
+}
+.car-move.fire:before {
+  content: url("../img/fire2_s.png");
+  position: absolute;
+  display: block;
+  width: 30px;
+  height: 35px;
+  top: -11px;
+  left: 71px;
+}
+
+.hidden {
+  display: none;
+}
+.btn[data-btn="stop"] {
+  background: rgb(240, 55, 55);
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  padding: 0;
+  line-height: 30px;
+}
+.btn[data-btn="start"] {
+  background: #48ffa5;
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  padding: 0;
+  line-height: 30px;
+}
+
+@keyframes racing {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(90%);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .all-wrapper {
+    font-size: 16px;
+
+  }
+  .btn {
+    width: 110px;
+  }
+  .generate-btn {
+    width: 180px;
+    max-width: 180px;
+  }
+  .car {
+    &__engine-btn {
+      width: 30px;
+      min-width: 30px;
+    }
+    &__flag-img {
+      right: 120px;
+    }
+  }
+}
+@media screen and (max-width: 800px) {
+  .all-wrapper {
+    font-size: 12px;
+
+  }
+  .btn {
+    width: 70px;
+    padding: 5px;
+  }
+  .car {
+    &__engine-btn {
+      width: 30px;
+      min-width: 30px;
+    }
+  }
+}

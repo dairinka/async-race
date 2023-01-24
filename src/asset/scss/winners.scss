@@ -1,0 +1,33 @@
+.winners-wrapper {
+  position: absolute;
+  width: 100%;
+  min-height: 100vh;
+  background: #1a1a1a;
+  z-index: 2;
+  padding: 30px;
+  overflow: hidden;
+}
+
+th {
+  padding: 5px 15px; 
+  border: 1px solid #ffff90;
+  color: #ffffff;
+}
+
+.table-header {
+  background: #ffff90;
+}
+
+.column-header {
+  color:#000000
+}
+
+.table-win {
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+.all-amount-win {
+  font-size: 3.5vw;
+  color: #a3a3a3;
+  margin-left: 30px;
+}

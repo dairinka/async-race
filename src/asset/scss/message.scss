@@ -1,0 +1,68 @@
+.message-wrap{
+  position:fixed;
+  width: 300px;
+  height: auto;
+  max-height: 100px;
+  background: #e2c338;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  opacity: 0;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 2vw;
+  animation-name: message;
+  animation-duration: 3s;
+  animation-timing-function: ease-in;
+  display: flex;
+  padding: 10px 15px;
+  align-items: center;
+  justify-items: center;
+}
+
+@keyframes message {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.message-winner-wrap {
+  position:fixed;
+  padding: 120px 20px 20px 20px;
+  width: 300px;
+  height: 300px;
+  line-height: 60px;
+  background: #ffffff;
+  outline: 5px double #e2c338;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  opacity: 0;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 2vw;
+  animation-name: message;
+  animation-duration: 4.5s;
+  animation-timing-function: ease-in;
+}
+
+.message-winner-wrap::before {
+  content: url("../img/icons8-кубок-96.png");
+  width: 96px;
+  height: 96px;
+  position: absolute;
+  top: 20px;
+  margin: auto;
+  left: 0;
+  right: 0;
+}
