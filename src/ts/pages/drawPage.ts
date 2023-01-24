@@ -7,16 +7,25 @@ export function drawMainPage(): void {
   const controlCarUlEl = <HTMLUListElement>document.createElement("ul");
   const controlRaceLineEl = <HTMLDivElement>document.createElement("div");
   const mainEl = <HTMLElement>document.createElement("main");
+  const footer = <HTMLElement>document.createElement("footer");
   allWrapperEl.className = "all-wrapper";
   menuLineEl.className = "page-btns";
   controlCarUlEl.className = "car-control-block";
   controlRaceLineEl.className = "control-race";
   mainEl.className = "main garage";
+  footer.className = "footer";
   drawMenu(menuLineEl);
   drawControlBlock(controlCarUlEl);
   drawControlRaceLine(controlRaceLineEl);
   drawMainBlock(mainEl);
-  allWrapperEl.append(menuLineEl, controlCarUlEl, controlRaceLineEl, mainEl);
+  getFooter(footer);
+  allWrapperEl.append(
+    menuLineEl,
+    controlCarUlEl,
+    controlRaceLineEl,
+    mainEl,
+    footer
+  );
   mainPageFragment.append(allWrapperEl);
   document.body.append(mainPageFragment);
 }
@@ -100,12 +109,7 @@ function drawMainBlock(parentElement: HTMLElement) {
   h2El.append(namePage, allAmountCarInGarage);
   pageNumberLine.append(pageName, pageNumeric);
   paginationLine.append(prevBtn, currentPage, nextBtn);
-  drawContentBlocks(carBlocksWrapper);
   parentElement.append(h2El, pageNumberLine, carBlocksWrapper, paginationLine);
-}
-
-function drawContentBlocks(parentElement: HTMLElement, isCarBlock = true) {
-  //isCarBlock ? drawCarBlock(parentElement) : drawWinnersBlocks(parentElement);
 }
 
 export function drawCarBlock(parentElement: HTMLElement, carData: CarData) {
@@ -153,7 +157,26 @@ export function drawCarBlock(parentElement: HTMLElement, carData: CarData) {
   carBlock.append(controlSingleCarLine, carRaceWrapper);
   parentElement.appendChild(carBlock);
 }
-
+function getFooter(parentElement: HTMLElement): void {
+  parentElement.innerHTML = ` <div class="footer__container">
+                                  <div>
+                                    <a href="https://rs.school/" class="footer__rs-logo">
+                                      <img src="./assets/rs_school.svg" alt="rs logo">
+                                    </a>
+                                  </div>
+                                  <div class="footer__title">
+                                    <a href="/">Async Race 2023</a>
+                                  </div>
+                                  <div class="footer__github">
+                                    <span class="footer__creators">
+                                      <span class="footer__github-logo">
+                                        <img src="./asset/github-logo.svg" alt="github logo">
+                                      </span>
+                                      <a href="https://github.com/dairinka" class="footer__contributor">@dairinka</a>
+                                    </span>
+                                  </div>
+                                </div>`;
+}
 export function getCarSVG(
   parentElement: HTMLElement,
   color: string,

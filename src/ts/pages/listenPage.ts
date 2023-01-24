@@ -3,7 +3,6 @@ import {
   removeParam,
   saveParam,
   getParam,
-  checkLSParam,
 } from "../localStorage/localStorage";
 import {
   LSParam,
@@ -39,7 +38,7 @@ import {
 import { showMessage, showWinner } from "../message/message";
 import carsName from "../../asset/data/carsName";
 import color from "../../asset/data/color";
-import { stopCar, fireCar, toStart } from "../animation/animate";
+import { stopCar, toStart } from "../animation/animate";
 import AnimationCar from "../animation/animateCar";
 import Engine from "../engine/engine";
 import {
@@ -61,7 +60,6 @@ function listenPage() {
       car = <HTMLElement>target.closest(".car");
       carId = <string>car.dataset.id;
     }
-    console.log("target", targetData);
     switch (targetData) {
       case "next":
         nextPage();
@@ -101,16 +99,9 @@ function listenPage() {
         break;
     }
   });
-  checkLSParam("listenPage()");
 }
 
 async function nextPage(): Promise<void> {
-  // const allAmountCar: string = await getAllCarAmount();
-  // const currentPage: string = checkPage();
-  // const page = Number(currentPage);
-  // const allPage: number = Math.ceil(
-  //   Number(allAmountCar) / Number(Base.limitCars)
-  // );
   const [page, allPage] = await getPageAndAllPage();
   if (page + 1 <= allPage) {
     const nextPage = String(page + 1);
@@ -122,12 +113,6 @@ async function nextPage(): Promise<void> {
 }
 
 async function prevPage(): Promise<void> {
-  // const allAmountCar: string = await getAllCarAmount();
-  // const currentPage: string = checkPage();
-  // const page = Number(currentPage);
-  // const allPage: number = Math.ceil(
-  //   Number(allAmountCar) / Number(Base.limitCars)
-  // );
   const [page, allPage] = await getPageAndAllPage();
   if (page - 1 > 0) {
     const prevPage = String(page - 1);
@@ -141,8 +126,7 @@ async function prevPage(): Promise<void> {
 function newPage(page: string) {
   updateCountPage(page);
   getDataForPage(page);
-  saveParam(LSParam.page, page, "function newPage()");
-  checkLSParam("newPage()");
+  saveParam(LSParam.page, page);
 }
 
 async function selectCar(carId: string) {
@@ -162,7 +146,7 @@ async function selectCar(carId: string) {
   inputColor.value = color;
   controlLine.classList.add("selected");
   carImg?.classList.add("selected");
-  saveParam(LSParam.carId, carId, "function selectCar()");
+  saveParam(LSParam.carId, carId);
 }
 
 function checkRemoveSelected(target: HTMLElement): void {
@@ -185,7 +169,7 @@ function removeSelected(): void {
 }
 
 async function updateCar() {
-  const carId = getParam(LSParam.carId, "updateCar()");
+  const carId = getParam(LSParam.carId);
   if (!carId) showMessage("Please, select a car!");
   const [name, color] = getCarInputData(InputType.update);
   await updateCarOnServer(carId, name, color);
@@ -201,7 +185,7 @@ async function createNewCar() {
   await createCarOnServer(carData);
   const amount = await getAllCarAmount();
   updateAmountOnPage(amount);
-  const page = getParam(LSParam.page, "createNewCar()");
+  const page = getParam(LSParam.page);
   getDataForPage(page);
 }
 
@@ -229,7 +213,7 @@ async function generateCar() {
   generateCarOnServer(arrCar);
   const amount = await getAllCarAmount();
   updateAmountOnPage(amount);
-  const page = getParam(LSParam.page, "createNewCar()");
+  const page = getParam(LSParam.page);
   getDataForPage(page);
 }
 
@@ -242,7 +226,7 @@ async function startCar(carId: string): Promise<void> {
   const startBtn = <HTMLElement>carBlock.querySelector(`[data-btn="start"]`);
   const stopBtn = <HTMLElement>carBlock.querySelector(`[data-btn="stop"]`);
   if (startBtn.hasAttribute("data-start")) {
-    showMessage(ServerMessage.tooManyRequest, carId);
+    showMessage(ServerMessage.tooManyRequest);
   } else {
     startBtn.dataset.start = "true";
     const resetBtn = <HTMLElement>document.querySelector(`[data-btn="reset"]`);

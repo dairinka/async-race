@@ -12,8 +12,7 @@ export function listenWinners() {
   winWrap.addEventListener("click", (event: MouseEvent) => {
     const target = <HTMLElement>event.target;
     const targetData = <string>target.dataset.btn;
-    const page: number = JSON.parse(getParam(LSParam.winPage, "listenWinners"));
-    console.log("target", target);
+    const page: number = JSON.parse(getParam(LSParam.winPage));
     switch (targetData) {
       case "garage":
         showGarage();
@@ -72,37 +71,26 @@ function showGarage() {
   allWrapper.classList.remove("hidden");
 }
 async function nextPage() {
-  const page = Number(JSON.parse(getParam(LSParam.winPage, "nextPageWin")));
+  const page = Number(JSON.parse(getParam(LSParam.winPage)));
   const allAmountWin: string = await getAmountWinners();
   const allPage = Math.ceil(Number(allAmountWin) / Number(Base.limitWinners));
-  console.log("/////////////nextPage");
-  console.log("allAmountWin", allAmountWin);
-  console.log("page", page);
-  console.log("allPage", allPage);
   if (page < allPage) {
     const nextPage = page + 1;
-    console.log("nextPage", nextPage);
     const winDataArr: WinnersData[] = await getWinners(nextPage);
     const startNumber: number = getStartNumber(nextPage);
     drawWinnersTable(winDataArr, startNumber);
-    saveParam(LSParam.winPage, nextPage, "nextPage");
+    saveParam(LSParam.winPage, nextPage);
     updateCountPage(nextPage);
   }
 }
 async function prevPage() {
-  const page = Number(JSON.parse(getParam(LSParam.winPage, "nextPageWin")));
-  // const allAmountWin: string = await getAmountWinners();
-  // const allPage = Math.ceil(Number(allAmountWin) / page);
-  console.log("/////////////prevPage");
-  //console.log("allAmountWin", allAmountWin);
-  console.log("page", page);
-  console.log("nextPage", nextPage);
+  const page = Number(JSON.parse(getParam(LSParam.winPage)));
   if (page > 1) {
     const prevPage = page - 1;
     const winDataArr: WinnersData[] = await getWinners(prevPage);
     const startNumber: number = getStartNumber(prevPage);
     drawWinnersTable(winDataArr, startNumber);
-    saveParam(LSParam.winPage, prevPage, "prevPage");
+    saveParam(LSParam.winPage, prevPage);
     updateCountPage(prevPage);
   }
 }

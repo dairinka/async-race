@@ -11,14 +11,9 @@ export function loadDataToCarBlocks(dataArray: CarData[]): void {
 
 export function updateCarPageData(carData: CarData): void {
   const { name, color, id } = carData;
-  console.log("########updateCarPageData#######");
-  console.log("carId", id, "carName", name, "carColor", color);
   const carBlock = <HTMLElement>document.querySelector(`[data-id = '${id}']`);
   const nameEl = <HTMLElement>carBlock.querySelector(".car__name");
   const carImg = <SVGGraphicsElement>carBlock.querySelector(".car__img");
-  console.log("carBlock", carBlock);
-  console.log("nameEl", nameEl);
-  console.log("carImg", carImg);
   nameEl.textContent = name;
   carImg.setAttribute("fill", color);
 }

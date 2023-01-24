@@ -3,6 +3,7 @@ import "./asset/scss/error.scss";
 import "./asset/scss/style.scss";
 import "./asset/scss/message.scss";
 import "./asset/scss/winners.scss";
+import "./asset/scss/footer.scss";
 import "./asset/scss/common.scss";
 import "./index.html";
 import ServerData from "./ts/load/serverData";
@@ -12,14 +13,8 @@ import { Base, LSParam, PageQueryParams, CarData } from "./ts/type";
 import { clearError, showError } from "./ts/error/showError";
 import { loadDataToCarBlocks } from "./ts/load/loadCarBlocks";
 import { loadGarageData, checkActivePageBtn } from "./ts/load/loadDataPage";
-import {
-  saveParam,
-  getParam,
-  checkPage,
-  checkLSParam,
-} from "./ts/localStorage/localStorage";
+import { saveParam, checkPage } from "./ts/localStorage/localStorage";
 // //////////////////////////////////////////////////////
-//checkLSParam("START");
 const startPageParams: PageQueryParams[] = [
   { _page: "1" },
   { _limit: Base.limitCars },
@@ -30,7 +25,6 @@ const serverData = new ServerData(Base.baseUrl);
 load();
 // /////////////////////////////////////////////////////
 async function load(): Promise<void> {
-  console.log("Load()");
   const isConnect = await serverData.isConnect();
   if (isConnect) {
     if (document.querySelector(".error-wrap")) {
@@ -43,7 +37,7 @@ async function load(): Promise<void> {
       { _limit: Base.limitCars },
     ];
     const carsArray: CarData[] = await serverData.getCars(pageParams);
-    saveParam(LSParam.allCarAmount, allAmountCar, "function load()");
+    saveParam(LSParam.allCarAmount, allAmountCar);
     drawMainPage();
     loadDataToCarBlocks(carsArray);
     loadGarageData(allAmountCar, curPage);
@@ -59,12 +53,11 @@ async function load(): Promise<void> {
 }
 export async function getAllCarAmount(): Promise<string> {
   const amount = await serverData.getCarsAmount(startPageParams);
-  saveParam(LSParam.allCarAmount, amount, "getAllCarAmount()");
+  saveParam(LSParam.allCarAmount, amount);
   return amount;
 }
 
 export async function getDataForPage(page: string): Promise<void> {
-  console.log("!!!!getDataForPage page =", page);
   const pageParams: PageQueryParams[] = [
     { _page: page },
     { _limit: Base.limitCars },

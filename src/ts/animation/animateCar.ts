@@ -14,7 +14,6 @@ class AnimationCar {
       document.querySelector(`[data-id="${this.carId}"]`)
     );
     const blockRacing = <HTMLElement>carBlock.querySelector(".racing-block");
-    console.log("blockRacing.offsetWidth", blockRacing.offsetWidth);
     const endX = blockRacing.offsetWidth - 130;
     const carMove = <HTMLElement>carBlock.querySelector(".car-move");
     const { velocity, distance } = this.engineData;

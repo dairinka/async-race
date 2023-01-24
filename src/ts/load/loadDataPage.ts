@@ -26,7 +26,6 @@ export function activeBtn(btn: HTMLElement): void {
 export function checkActivePageBtn(page: number, allPage: number) {
   const nextBtn = <HTMLElement>document.querySelector("[data-btn='next']");
   const prevtBtn = <HTMLElement>document.querySelector("[data-btn='prev']");
-  console.log("page:", page, "allPage", allPage);
   if (page === allPage) {
     nonActiveBtn(nextBtn);
   } else if (page === 1) {

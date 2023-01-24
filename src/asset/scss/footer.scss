@@ -1,0 +1,107 @@
+.footer {
+  display: flex;
+  padding: 0 10px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+
+  &__container {
+    display: flex;
+    align-items: center;
+    width: 1147px;
+    justify-content: space-between;
+    div {
+      width: 33%;
+    }
+  }
+
+  &__rs-logo {
+    display: block;
+    width: 94.5px;
+    height: 35px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    &:hover {
+      filter: brightness(0.8);
+    }
+  }
+
+  &__title {
+    display: flex;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 16px;
+    a {
+      color: #fff;
+      &:hover {
+        filter: brightness(0.8);
+      }
+    }
+  }
+
+  &__github {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  &__join-us {
+    font-weight: 400;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  &__creators {
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+    font-size: 16px;
+  }
+
+  &__github-logo {
+    margin: 0 12px;
+    width: 30px;
+    height: 30px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__contributor {
+    color: #fff;
+
+    &:hover {
+      filter: brightness(0.8);
+    }
+  }
+}
+
+@media (max-width:  800px) {
+  .footer {
+    &__join-us {
+      display: none;
+    }
+
+    &__container {
+      div {
+        width: auto;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .footer {
+    height: 120px;
+    &__container {
+      flex-direction: column;
+      div {
+        width: auto;
+        margin: 4px 0;
+      }
+    }
+  }
+}

@@ -13,5 +13,4 @@ export function showError(errorMessage: string): void {
 export function clearError(): void {
   const errorWrapEl = <HTMLElement>document.querySelector(".error-wrap");
   errorWrapEl.remove();
-  console.log("delete error");
 }

@@ -77,7 +77,6 @@ export async function drawWinnersTable(
   const tableFragment = <DocumentFragment>document.createDocumentFragment();
   const tableBody = <HTMLTableSectionElement>document.createElement("tbody");
   winnersData.forEach(async ({ id, wins, time }, ind) => {
-    console.log("id", id, "wins", wins, "time", time);
     const carId = (<number>id).toString();
     const carData: CarData = await getCurrentCar(carId);
     const { name, color } = carData;

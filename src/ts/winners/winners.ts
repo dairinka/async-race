@@ -20,7 +20,6 @@ class Winners {
     const url = `${this.baseUrl}/winners?_page=1&_limit=10`;
     const response: Response = await fetch(url);
     const allWinAmount = response.headers.get("X-Total-Count");
-    console.log("all amount winners", allWinAmount);
     return String(allWinAmount);
   }
 
@@ -29,16 +28,10 @@ class Winners {
     sort = WinnersSort.time,
     order = SortOrder.up
   ): Promise<WinnersData[]> {
-    // const currentPage = this.normalizeId(page);
     const limit = this.normalizeId(this.limit);
     const url = `${this.baseUrl}/winners?_page=${page}&_limit=${limit}&_sort=${sort}&_order=${order}`;
-    console.log("url", url);
     const response: Response = await fetch(url);
-    console.log("response in getWinners", response);
     const data = response.json();
-    console.log("data in getWinners", data);
-    const winnersData: WinnersData = JSON.parse(JSON.stringify(data));
-    console.log("winnersData in getWinners", winnersData);
     return data;
   }
   public async createWinner(body: WinnersData): Promise<void> {
@@ -50,8 +43,6 @@ class Winners {
       },
       body: JSON.stringify(body),
     });
-    const data: JSON = await response.json();
-    console.log("create winner", data);
   }
   public async getWinner(winnerId: string): Promise<WinnersData> {
     const id = this.normalizeId(winnerId);
@@ -74,8 +65,6 @@ class Winners {
       },
       body: JSON.stringify(body),
     });
-    const data: JSON = await response.json();
-    console.log("update winner", data);
   }
   public async deleteWinner(carId: string): Promise<void> {
     const id = this.normalizeId(carId);
@@ -84,7 +73,6 @@ class Winners {
       method: "DELETE",
     });
     const data: JSON = await response.json();
-    console.log("create winner", data);
   }
 }
 export default Winners;

@@ -7,15 +7,13 @@ import { getParam, saveParam } from "../localStorage/localStorage";
 const winners = new Winners();
 
 export async function loadWinnerPage() {
-  if (!getParam(LSParam.winPage, "loadWinnerPage")) {
-    saveParam(LSParam.winPage, "1", "loadWinnerPage");
+  if (!getParam(LSParam.winPage)) {
+    saveParam(LSParam.winPage, "1");
   }
-  const page: number = JSON.parse(getParam(LSParam.winPage, "loadWinnerPage"));
+  const page: number = JSON.parse(getParam(LSParam.winPage));
   const winData: WinnersData[] = await getWinners(page);
   const amountWins: string = await getAmountWinners();
   const startNumber = getStartNumber(page);
-  console.log("winData", winData);
-  console.log("amountWins", amountWins);
   drawWinnersPage();
   loadWinnersData(amountWins, page);
   drawWinnersTable(winData, startNumber);
@@ -38,7 +36,6 @@ export async function createWinner(winnerData: WinnersData) {
 
 export async function getWinner(carId: string): Promise<WinnersData> {
   const winData: WinnersData = await winners.getWinner(carId);
-  console.log("winData in getWinner2", winData);
   return winData;
 }
 

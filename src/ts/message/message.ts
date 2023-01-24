@@ -1,5 +1,4 @@
-export function showMessage(message: string, carId = ""): void {
-  console.log("show message");
+export function showMessage(message: string): void {
   const messageFragment = <DocumentFragment>document.createDocumentFragment();
   const messageWrapEl = <HTMLDivElement>document.createElement("div");
   const messageMessageEl = <HTMLParagraphElement>document.createElement("p");
@@ -18,7 +17,6 @@ export function clearMessage(): void {
 }
 
 export function showWinner(carId: string, time: string): void {
-  console.log("show winner");
   const carBlock = <HTMLElement>document.querySelector(`[data-id="${carId}"]`);
   const carNameEl = <HTMLElement>carBlock.querySelector(".car__name");
   const carName: string = carNameEl.textContent || "****";

@@ -6,7 +6,6 @@ let globalAnimateId: number;
 export function animationCar(carId: string, engineData: EngineData): void {
   const carBlock = <HTMLElement>document.querySelector(`[data-id="${carId}"]`);
   const blockRacing = <HTMLElement>carBlock.querySelector(".racing-block");
-  console.log("blockRacing.offsetWidth", blockRacing.offsetWidth);
   const endX = blockRacing.offsetWidth - 130;
   const carMove = <HTMLElement>carBlock.querySelector(".car-move");
   const { velocity, distance } = engineData;
@@ -31,7 +30,6 @@ export function stopAnimation() {
 export function stopCar(animationCar: AnimationCar, carId: string): void {
   const carBlock = <HTMLElement>document.querySelector(`[data-id="${carId}"]`);
   const startBtn = <HTMLElement>carBlock.querySelector(`[data-btn="start"]`);
-  console.log("stoooop");
   animationCar.stopAnimation();
   startBtn.removeAttribute("data-start");
 }

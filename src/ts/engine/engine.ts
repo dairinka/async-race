@@ -2,7 +2,7 @@ import { fireCar, stopCar } from "../animation/animate";
 import { Path, EngineData, EngineStatus, ServerStatus, Winner } from "../type";
 import AnimationCar from "../animation/animateCar";
 import { ServerMessage } from "../type";
-import { showMessage, showWinner } from "../message/message";
+import { showMessage } from "../message/message";
 class Engine {
   baseUrl: string;
   controller: AbortController;
@@ -42,14 +42,10 @@ class Engine {
       method: "PATCH",
     });
     const serverStatus: ServerStatus = response.status;
-    console.log(response.status);
     if (serverStatus === ServerStatus.carStop) {
       stopCar(animationCar, this.carId);
-      //showMessage(ServerMessage.carStop, this.carId);
       fireCar(this.carId);
     }
-    // const data: string = await response.json();
-    // const engineData: EngineData = JSON.parse(JSON.stringify(data));
     return serverStatus;
   }
   public async goRace(
@@ -64,7 +60,6 @@ class Engine {
         method: "PATCH",
       });
       const serverStatus: ServerStatus = response.status;
-      console.log(response.status);
       switch (serverStatus) {
         case ServerStatus.ok:
           const endTime = performance.now();
@@ -77,10 +72,9 @@ class Engine {
           resolve(result);
           break;
         case ServerStatus.tooManyRequest:
-          showMessage(ServerMessage.tooManyRequest, this.carId);
+          showMessage(ServerMessage.tooManyRequest);
           break;
         case ServerStatus.carStop:
-          //showMessage(ServerMessage.carStop, this.carId);
           stopCar(animationCar, this.carId);
           fireCar(this.carId);
           reject(ServerStatus.carStop);

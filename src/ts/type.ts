@@ -1,5 +1,3 @@
-import carsName from "../asset/data/carsName";
-
 export enum Path {
   garage = "/garage",
   engine = "/engine",

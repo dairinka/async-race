@@ -78,18 +78,12 @@ class ServerData {
   }
 
   public async updateCar(carId: string, carName: string, carColor: string) {
-    console.log("(((((((updateCar on server)))))))");
-    console.log("carId", carId);
-    console.log("carName", carName);
-    console.log("carColor", carColor);
     const id = this.normalizeId(carId);
     const url = `${this.baseUrl}${Path.garage}/${id}`;
-    console.log("url", url);
     const body = {
       name: carName,
       color: carColor,
     };
-    console.log("body", body);
     await fetch(url, {
       method: "PUT",
       headers: {
